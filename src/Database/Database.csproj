@@ -10,4 +10,8 @@
     <PackageReference Include="dapper" Version="1.50.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MutualFundPerformance\" />
+  </ItemGroup>
+
 </Project>

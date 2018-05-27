@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>MutualFundPerformance.Build</AssemblyName>
+    <RootNamespace>MutualFundPerformance.Build</RootNamespace>
+  </PropertyGroup>
+
+</Project>
