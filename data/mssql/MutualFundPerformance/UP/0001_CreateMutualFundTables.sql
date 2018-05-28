@@ -3,7 +3,8 @@ GO
 
 CREATE TABLE [MutualFund].[MutualFund](
 	[MutualFundId] [uniqueidentifier] NOT NULL,
-	[Name] [nvarchar](255) NOT NULL
+	[Name] [nvarchar](255) NOT NULL,
+	[Symbol] [nvarchar](6) NOT NULL,
  CONSTRAINT [PK_MutualFund_MutualFund] PRIMARY KEY CLUSTERED 
 (
 	[MutualFundId] ASC

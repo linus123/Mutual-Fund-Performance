@@ -42,7 +42,8 @@ namespace MutualFundPerformance.TestDataPopulator
                 mutualFundDtos.Add(new MutualFundDto()
                 {
                     MutualFundId = mutualFundId,
-                    Name = $"Mutual Fund {fundCounter}"
+                    Name = $"Mutual Fun {fundCounter}",
+                    Symbol = $"MF{fundCounter:000}",
                 });
 
                 var mutualFundInvestmentVehicleId = Guid.NewGuid();

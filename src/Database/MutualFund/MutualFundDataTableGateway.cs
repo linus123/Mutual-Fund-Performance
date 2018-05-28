@@ -19,6 +19,7 @@ namespace MutualFundPerformance.Database.MutualFund
 SELECT
         [MutualFundId]
         ,[Name]
+        ,[Symbol]
     FROM
         [MutualFund].[MutualFund]";
 
@@ -39,9 +40,9 @@ SELECT
             const string sql = @"
 INSERT INTO
         [MutualFund].[MutualFund]
-        ([MutualFundId], [Name])
+        ([MutualFundId], [Name], [Symbol])
     VALUES
-        (@MutualFundId, @Name)";
+        (@MutualFundId, @Name, @Symbol)";
 
             ConnectionExecute(connection => connection.Execute(sql, dtos), sql);
         }
