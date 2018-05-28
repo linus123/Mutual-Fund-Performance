@@ -7,7 +7,8 @@ namespace MutualFundPerformance.WebApi.Controllers
     public class PriceController : Controller
     {
         [HttpPost("GetAll")]
-        public object[] GetAll()
+        public object[] GetAll(
+            string symbol)
         {
             return new object[0];
         }
