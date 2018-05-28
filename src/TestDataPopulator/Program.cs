@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using MutualFundPerformance.Database.HistoricalPriceData;
 using MutualFundPerformance.Database.MutualFund;
+using MutualFundPerformance.SharedKernel.Infrastructure.HistoricalPriceData;
 using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 
 namespace MutualFundPerformance.TestDataPopulator
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -13,12 +15,15 @@ namespace MutualFundPerformance.TestDataPopulator
 
             var mutualFundDataTableGateway = new MutualFundDataTableGateway(testDataPopulatorSettings);
             var benchmarkDataTableGateway = new BenchmarkDataTableGateway(testDataPopulatorSettings);
+            var investmentVehicleDataTableGateway = new InvestmentVehicleDataTableGateway(testDataPopulatorSettings);
 
+            investmentVehicleDataTableGateway.DeleteAll();
             benchmarkDataTableGateway.DeleteAll();
             mutualFundDataTableGateway.DeleteAll();
 
             var mutualFundDtos = new List<MutualFundDto>();
             var benchmarkDtos = new List<BenchmarkDto>();
+            var investmentVehicleDtos = new List<InvestmentVehicleDto>();
 
             var random = new Random(100);
 
@@ -32,6 +37,13 @@ namespace MutualFundPerformance.TestDataPopulator
                 {
                     MutualFundId = mutualFundId,
                     Name = $"Mutual Fund {fundCounter}"
+                });
+
+                investmentVehicleDtos.Add(new InvestmentVehicleDto()
+                {
+                    ExternalId = Guid.NewGuid(),
+                    InvestmentVehicleId = mutualFundId,
+                    Name = $"Prices for Mutual Fund {fundCounter}"
                 });
 
                 var benchmarkCount = 1;
@@ -56,6 +68,14 @@ namespace MutualFundPerformance.TestDataPopulator
                         Name = $"Benchmark {fundCounter} {benchmarkCounter}",
                         SortOrder = benchmarkCounter
                     });
+
+                    investmentVehicleDtos.Add(new InvestmentVehicleDto()
+                    {
+                        InvestmentVehicleId = Guid.NewGuid(),
+                        ExternalId = mutualFundId,
+                        Name = $"Prices for Benchmark {fundCounter} {benchmarkCounter}"
+                    });
+
                 }
             }
 
@@ -64,6 +84,10 @@ namespace MutualFundPerformance.TestDataPopulator
 
             Console.WriteLine("Inserting benchmarks.");
             benchmarkDataTableGateway.Insert(benchmarkDtos.ToArray());
+
+            Console.WriteLine("Inserting investment vehcles.");
+            investmentVehicleDataTableGateway.Insert(investmentVehicleDtos.ToArray());
+
         }
     }
 }
