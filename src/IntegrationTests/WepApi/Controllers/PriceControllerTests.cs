@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
+using MutualFundPerformance.Database.MutualFund;
+using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 using MutualFundPerformance.WebApi.Controllers;
 using Xunit;
 
@@ -41,6 +44,30 @@ namespace MutualFundPerformance.IntegrationTests.WepApi.Controllers
             result.Should().HaveCount(0);
         }
 
+        [Fact]
+        public void ShouldReturnEmptyArrayWhenSymbolIsFoundButNoInvestmentVehicleIsFound()
+        {
+            var mutualFundDataTableGateway = new MutualFundDataTableGateway(new IntegrationTestsSettings());
+
+            mutualFundDataTableGateway.DeleteAll();
+
+            var symbol1 = "SYMB1";
+
+            mutualFundDataTableGateway.Insert(new []{ new MutualFundDto()
+            {
+                MutualFundId = Guid.NewGuid(),
+                Name = "Some Fund",
+                Symbol = symbol1
+            }  });
+
+            var controller = new PriceController();
+
+            var result = controller.GetAll(new string[] { symbol1 });
+
+            result.Should().HaveCount(0);
+
+            mutualFundDataTableGateway.DeleteAll();
+        }
 
     }
 }
