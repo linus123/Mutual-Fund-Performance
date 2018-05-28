@@ -15,7 +15,8 @@ GO
 CREATE TABLE [MutualFund].[Benchmark](
 	[BenchmarkId] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](255) NOT NULL,
-	[MutualFundId] [uniqueidentifier] NOT NULL
+	[MutualFundId] [uniqueidentifier] NOT NULL,
+	[SortOrder] [int] not null,
  CONSTRAINT [PK_MutualFund_Benchmark] PRIMARY KEY CLUSTERED 
 (
 	[BenchmarkId] ASC

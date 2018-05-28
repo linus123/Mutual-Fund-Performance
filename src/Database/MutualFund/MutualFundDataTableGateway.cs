@@ -43,8 +43,6 @@ INSERT INTO
     VALUES
         (@MutualFundId, @Name)";
 
-            MutualFundDto[] result = null;
-
             ConnectionExecute(connection => connection.Execute(sql, dtos), sql);
         }
 

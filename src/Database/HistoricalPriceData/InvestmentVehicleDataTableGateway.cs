@@ -44,8 +44,6 @@ INSERT INTO
     VALUES
         (@InvestmentVehicleId, @Name, @ExternalId)";
 
-            InvestmentVehicleDto[] result = null;
-
             ConnectionExecute(connection => connection.Execute(sql, dtos), sql);
         }
 

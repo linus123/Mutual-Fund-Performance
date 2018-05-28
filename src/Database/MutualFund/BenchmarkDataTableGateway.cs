@@ -20,6 +20,7 @@ SELECT
         [BenchmarkId]
         ,[Name]
         ,[MutualFundId]
+        ,[SortOrder]
     FROM
         [MutualFund].[Benchmark]";
 
@@ -40,11 +41,9 @@ SELECT
             const string sql = @"
 INSERT INTO
         [MutualFund].[Benchmark]
-        ([BenchmarkId], [Name], [MutualFundId])
+        ([BenchmarkId], [Name], [MutualFundId], [SortOrder])
     VALUES
-        (@BenchmarkId, @Name, @MutualFundId)";
-
-            BenchmarkDto[] result = null;
+        (@BenchmarkId, @Name, @MutualFundId, @SortOrder)";
 
             ConnectionExecute(connection => connection.Execute(sql, dtos), sql);
         }

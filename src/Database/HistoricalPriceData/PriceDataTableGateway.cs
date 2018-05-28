@@ -44,8 +44,6 @@ INSERT INTO
     VALUES
         (@InvestmentVehicleId, @CloseDate, @Price)";
 
-            PriceDto[] result = null;
-
             ConnectionExecute(connection => connection.Execute(sql, dtos), sql);
         }
 

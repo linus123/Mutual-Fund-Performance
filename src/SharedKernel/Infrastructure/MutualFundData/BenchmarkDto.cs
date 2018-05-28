@@ -7,6 +7,6 @@ namespace MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData
         public Guid BenchmarkId { get; set; }
         public string Name { get; set; }
         public Guid MutualFundId { get; set; }
-
+        public int SortOrder { get; set; }
     }
 }
