@@ -8,7 +8,7 @@ namespace MutualFundPerformance.WebApi.Controllers
     {
         [HttpPost("GetAll")]
         public object[] GetAll(
-            string symbol)
+            string[] symbols)
         {
             return new object[0];
         }
