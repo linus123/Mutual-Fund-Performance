@@ -45,39 +45,16 @@ namespace MutualFundPerformance.TestDataPopulator
                     Name = $"Mutual Fund {fundCounter}"
                 });
 
-                var investmentVehicleId = Guid.NewGuid();
+                var mutualFundInvestmentVehicleId = Guid.NewGuid();
 
                 investmentVehicleDtos.Add(new InvestmentVehicleDto()
                 {
-                    InvestmentVehicleId = investmentVehicleId,
+                    InvestmentVehicleId = mutualFundInvestmentVehicleId,
                     ExternalId = mutualFundId,
                     Name = $"Prices for Mutual Fund {fundCounter}"
                 });
 
-                var dateCounter = currentDate.AddMonths(-121);
-                var currentPrice = random.Next(1, 100000);
-
-                while (dateCounter <= currentDate)
-                {
-                    if (dateCounter.DayOfWeek != DayOfWeek.Saturday && dateCounter.DayOfWeek != DayOfWeek.Sunday)
-                    {
-                        priceDtos.Add(new PriceDto()
-                        {
-                            InvestmentVehicleId = investmentVehicleId,
-                            CloseDate = dateCounter.Date,
-                            Price = currentPrice / 100m
-                        });
-
-                        var change = random.Next(-1000, 1000);
-
-                        currentPrice += change;
-                    }
-                    else
-                    {
-                    }
-
-                    dateCounter = dateCounter.AddDays(1);
-                }
+                priceDtos = AddPrices(currentDate, random, priceDtos, mutualFundInvestmentVehicleId);
 
                 var benchmarkCount = 1;
 
@@ -102,12 +79,16 @@ namespace MutualFundPerformance.TestDataPopulator
                         SortOrder = benchmarkCounter
                     });
 
+                    var benchmarkInvestmentVehicleId = Guid.NewGuid();
+
                     investmentVehicleDtos.Add(new InvestmentVehicleDto()
                     {
-                        InvestmentVehicleId = Guid.NewGuid(),
+                        InvestmentVehicleId = benchmarkInvestmentVehicleId,
                         ExternalId = mutualFundId,
                         Name = $"Prices for Benchmark {fundCounter} {benchmarkCounter}"
                     });
+
+                    priceDtos = AddPrices(currentDate, random, priceDtos, benchmarkInvestmentVehicleId);
 
                 }
             }
@@ -123,6 +104,37 @@ namespace MutualFundPerformance.TestDataPopulator
 
             Console.WriteLine("Inserting prices.");
             priceDataTableGateway.Insert(priceDtos.ToArray());
+        }
+
+        private static List<PriceDto> AddPrices(
+            DateTime currentDate,
+            Random random,
+            List<PriceDto> priceDtos,
+            Guid investmentVehicleId)
+        {
+            var dateCounter = currentDate.AddMonths(-121);
+            var currentPrice = random.Next(1, 100000);
+
+            while (dateCounter <= currentDate)
+            {
+                if (dateCounter.DayOfWeek != DayOfWeek.Saturday && dateCounter.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    priceDtos.Add(new PriceDto()
+                    {
+                        InvestmentVehicleId = investmentVehicleId,
+                        CloseDate = dateCounter.Date,
+                        Price = currentPrice / 100m
+                    });
+
+                    var change = random.Next(-1000, 1000);
+
+                    currentPrice += change;
+                }
+
+                dateCounter = dateCounter.AddDays(1);
+            }
+
+            return priceDtos;
         }
     }
 }
