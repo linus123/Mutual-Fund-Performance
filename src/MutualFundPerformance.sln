@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{E960AB19-B549-4314-A92B-599D6BA9C5F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{E960AB19-B549-4314-A92B-599D6BA9C5F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{1A6EBC25-8B63-4B31-A45F-DA7E925B6E0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{1A6EBC25-8B63-4B31-A45F-DA7E925B6E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{C56E445E-BFFD-4A0B-8235-B5B705EDA60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{C56E445E-BFFD-4A0B-8235-B5B705EDA60B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{23DAB04F-EA62-4B09-BE3F-394DA3A5C9FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{23DAB04F-EA62-4B09-BE3F-394DA3A5C9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataPopulator", "TestDataPopulator\TestDataPopulator.csproj", "{F858B423-92AE-4147-BA39-E09EB9DB62AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
