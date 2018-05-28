@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MutualFundPerformance.Database.HistoricalPriceData;
+using MutualFundPerformance.Database.MutualFund;
+using MutualFundPerformance.SharedKernel;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MutualFundPerformance.WebApi
@@ -18,6 +21,11 @@ namespace MutualFundPerformance.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMutualFundPerformanceDatabaseSettings>(new WebApiSettings(Configuration));
+            services.AddSingleton<MutualFundDataTableGateway>();
+            services.AddSingleton<InvestmentVehicleDataTableGateway>();
+            services.AddSingleton<PriceDataTableGateway>();
+
             services.AddMvc();
 
             // Register the Swagger generator, defining 1 or more Swagger documents

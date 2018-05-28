@@ -1,18 +1,16 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
 using MutualFundPerformance.Database.HistoricalPriceData;
 using MutualFundPerformance.Database.MutualFund;
 
 namespace MutualFundPerformance.WebApi.Controllers
 {
-
     [Route("api/[controller]")]
     public class PriceController : Controller
     {
-        private MutualFundDataTableGateway _mutualFundDataTableGateway;
-        private InvestmentVehicleDataTableGateway _investmentVehicleDataTableGateway;
-        private PriceDataTableGateway _priceDataTableGateway;
+        private readonly MutualFundDataTableGateway _mutualFundDataTableGateway;
+        private readonly InvestmentVehicleDataTableGateway _investmentVehicleDataTableGateway;
+        private readonly PriceDataTableGateway _priceDataTableGateway;
 
         public PriceController(
             MutualFundDataTableGateway mutualFundDataTableGateway,
