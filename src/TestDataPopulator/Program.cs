@@ -54,7 +54,7 @@ namespace MutualFundPerformance.TestDataPopulator
                     Name = $"Prices for Mutual Fund {fundCounter}"
                 });
 
-                priceDtos = AddPrices(currentDate, random, priceDtos, mutualFundInvestmentVehicleId);
+                priceDtos = AddPrices(currentDate, random, priceDtos, mutualFundInvestmentVehicleId, isFund: true);
 
                 var benchmarkCount = 1;
 
@@ -88,7 +88,7 @@ namespace MutualFundPerformance.TestDataPopulator
                         Name = $"Prices for Benchmark {fundCounter} {benchmarkCounter}"
                     });
 
-                    priceDtos = AddPrices(currentDate, random, priceDtos, benchmarkInvestmentVehicleId);
+                    priceDtos = AddPrices(currentDate, random, priceDtos, benchmarkInvestmentVehicleId, isFund: false);
 
                 }
             }
@@ -110,9 +110,20 @@ namespace MutualFundPerformance.TestDataPopulator
             DateTime currentDate,
             Random random,
             List<PriceDto> priceDtos,
-            Guid investmentVehicleId)
+            Guid investmentVehicleId,
+            bool isFund)
         {
             var dateCounter = currentDate.AddMonths(-121);
+
+            var timeRandom = random.Next(1, 10);
+
+            if (isFund && timeRandom >= 9)
+            {
+                var backDayCount = random.Next(1, 3600) * -1;
+
+                dateCounter = currentDate.AddMonths(backDayCount);
+            }
+
             var currentPrice = random.Next(1, 100000);
 
             while (dateCounter <= currentDate)
