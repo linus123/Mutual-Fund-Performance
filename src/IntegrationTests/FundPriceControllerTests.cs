@@ -124,5 +124,28 @@ namespace MutualFundPerformance.IntegrationTests
             investmentVehicleDataTableGateway.DeleteAll();
         }
 
+        /*
+         {
+  {
+    Id: "Guid"
+    Name: "MF1",
+    Price: 3000.2,
+    OneDayReturn: 0.003,
+    WeekToDate: 0.0005,
+    MonthToDate: 0.0008,
+    OneMonth: {
+      IsValid: true,
+      Value: 0.0002,
+      ErrorMessage: null
+    },
+    ThreeMonth: {
+      IsValid: false,
+      Value: null,
+      ErrorMessage: "Missing 1 of 3 returns"
+    },
+  }
+}
+         */
+
     }
 }
