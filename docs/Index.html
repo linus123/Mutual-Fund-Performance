@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Mutual Fund Performance</title>
+
+	<link rel="stylesheet" href="lib/reveal.js-3.4.1/css/reveal.css">
+	<link rel="stylesheet" href="lib/reveal.js-3.4.1/css/theme/black.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/reveal.js-3.4.1/lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? 'lib/reveal.js-3.4.1/css/print/pdf.css' : 'lib/reveal.js-3.4.1/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+</head>
+<body>
+<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<h1>Mutual Fund Performance</h1>
+					<p>Sample Application</p>
+				</section>
+
+				<section>
+					<h3>Calculates fund performance</h3>
+					<p>Similar to Returns Web</p>
+				</section>
+
+				<section>
+					<h3>Test Driven Development</h3>
+				</section>
+
+				<section>
+					<section>
+						<h2>Database</h2>
+					</section>
+
+					<section>
+						<h3>Two Schemas</h3>
+						<ul>
+							<li>Historical Prices</li>
+							<li>Mutual Funds</li>
+						</ul>
+					</section>
+
+					<section>
+						<p>Historical Prices</p>
+						<img src="images/HistoricalPriceErd.png" />
+
+						<!--
+
+http://www.plantuml.com/plantuml/uml
+
+@startuml
+object HistoricalPrice.InvestmentVehicle{
++ InvestmentVehicleId : Guid
++ Name : string
++ ExternalId : Guid
+}
+
+object HistoricalPrice.HistoricalPrice{
++ InvestmentVehicleId : int
++ CloseDate : DateTime
++ Price : decimal
+}
+
+HistoricalPrice.InvestmentVehicle"1"  <-- "*" HistoricalPrice.HistoricalPrice
+@enduml
+-->
+
+					</section>
+
+					<section>
+						<p>Mutual Funds</p>
+						<img src="images/MutualFundErd.png" />
+
+						<!--
+
+                        @startuml
+        object MutualFund.MutualFund{
+        + MutualFundId : Guid
+        + Name : string
+        + Symbol : string
+        }
+
+        object MutualFund.Benchmark{
+        + BenchmarkId : int
+        + Name : string
+        + MutualFundId : Guid
+        + SortOrder: int
+        }
+
+        MutualFund.MutualFund "1" <-- "*" MutualFund.Benchmark
+        @enduml
+
+                        -->
+
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Data Layer</h2>
+					</section>
+
+					<section>
+						<h3><a href="https://martinfowler.com/eaaCatalog/dataTransferObject.html" target="_blank">Data Transfer Object</a></h3>
+						<p>FooDto</p>
+					</section>
+
+					<section>
+						<h3><a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">Table Data Gateway</a></h3>
+					</section>
+				</section>
+
+				<section>
+					<img src="images/UserInterface.png" />
+				</section>
+
+			</div>
+</div>
+
+<script src="lib/reveal.js-3.4.1/lib/js/head.min.js"></script>
+<script src="lib/reveal.js-3.4.1/js/reveal.js"></script>
+
+<script>
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		history: true,
+
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'lib/reveal.js-3.4.1/plugin/markdown/marked.js' },
+			{ src: 'lib/reveal.js-3.4.1/plugin/markdown/markdown.js' },
+			{ src: 'lib/reveal.js-3.4.1/plugin/notes/notes.js', async: true },
+			{ src: 'lib/reveal.js-3.4.1/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+		]
+	});
+</script>
+</body>
+</html>
