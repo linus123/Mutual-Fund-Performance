@@ -125,9 +125,23 @@ namespace MutualFundPerformance.IntegrationTests
         }
 
         /*
-         {
+         *
+         *{
+  Date {
+    Year: 2018,
+    Month: 2,
+    Day: 2
+  },
+  MutualFundIds: ["Guid1", "Guid2"]
+}
+         *
+         */
+
+        /*
+[
+
   {
-    Id: "Guid"
+    Id: "Guid1",
     Name: "MF1",
     Price: 3000.2,
     OneDayReturn: 0.003,
@@ -142,9 +156,28 @@ namespace MutualFundPerformance.IntegrationTests
       IsValid: false,
       Value: null,
       ErrorMessage: "Missing 1 of 3 returns"
+    }
+  },
+    {
+    Id: "Guid2",
+    Name: "MF2",
+    Price: 3000.2,
+    OneDayReturn: 0.003,
+    WeekToDate: 0.0005,
+    MonthToDate: 0.0008,
+    OneMonth: {
+      IsValid: true,
+      Value: 0.0002,
+      ErrorMessage: null
     },
+    ThreeMonth: {
+      IsValid: false,
+      Value: null,
+      ErrorMessage: "Missing 1 of 3 returns"
+    }
   }
-}
+
+]
          */
 
     }
