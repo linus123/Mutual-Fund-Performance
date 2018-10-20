@@ -8,6 +8,9 @@ namespace MutualFundPerformance.WebServiceCaller
         public CurrencyExchangeRateResult[] GetToUsdHistorical(
             CurrencyExchangeRateRequest[] requests)
         {
+            if (requests.Length <= 0)
+                return new CurrencyExchangeRateResult[0];
+
             foreach (var request in requests)
             {
                 if (string.IsNullOrEmpty(request.BaseCurrencyCode))
@@ -16,7 +19,17 @@ namespace MutualFundPerformance.WebServiceCaller
                 }
             }
 
-            return new CurrencyExchangeRateResult[0];
+            return new CurrencyExchangeRateResult[]
+            {
+                new CurrencyExchangeRateResult()
+                {
+                    BaseCurrencyCode = requests[0].BaseCurrencyCode,
+                    StartDate = requests[0].StartDate,
+                    EndDate = requests[0].EndDate,
+                    HasError = true,
+                    ErrorMessage = "Could not find rates for given currency code."
+                }
+            };
         }
     }
 }

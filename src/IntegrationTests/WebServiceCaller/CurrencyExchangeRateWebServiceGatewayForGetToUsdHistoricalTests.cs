@@ -32,7 +32,35 @@ namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
             {
                 gateway.GetToUsdHistorical(requests);
             });
+        }
+
+        [Fact]
+        public void ShouldReturnErrorWhenRatesNotFoundForCode()
+        {
+            var gateway = new CurrencyExchangeRateWebServiceGateway();
+
+            var requests = new[]
+            {
+                new CurrencyExchangeRateRequest()
+                {
+                    BaseCurrencyCode = "XXX",
+                    StartDate = new DateTime(2010, 1, 1),
+                    EndDate = new DateTime(2018, 1, 1)
+                },
+            };
+
+            var results = gateway.GetToUsdHistorical(requests);
+
+            results.Should().HaveCount(1);
+
+            results[0].BaseCurrencyCode.Should().Be("XXX");
+            results[0].StartDate.Should().Be(new DateTime(2010, 1, 1));
+            results[0].EndDate.Should().Be(new DateTime(2018, 1, 1));
+
+            results[0].HasError.Should().BeTrue();
+            results[0].ErrorMessage.Should().Be("Could not find rates for given currency code.");
 
         }
+
     }
 }
