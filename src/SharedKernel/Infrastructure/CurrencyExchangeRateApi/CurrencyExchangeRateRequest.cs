@@ -6,6 +6,6 @@ namespace MutualFundPerformance.SharedKernel.Infrastructure.CurrencyExchangeRate
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string[] BaseCurrencyCodes { get; set; }
+        public string BaseCurrencyCode { get; set; }
     }
 }

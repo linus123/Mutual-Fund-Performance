@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using MutualFundPerformance.SharedKernel.Infrastructure.CurrencyExchangeRateApi;
 using MutualFundPerformance.WebServiceCaller;
 using Xunit;
@@ -12,9 +13,26 @@ namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
         {
             var gateway = new CurrencyExchangeRateWebServiceGateway();
 
-            var results = gateway.GetToUsdHistorical(new CurrencyExchangeRateResult[0]);
+            var results = gateway.GetToUsdHistorical(new CurrencyExchangeRateRequest[0]);
 
             results.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public void ShouldThrowExceptionWhenCurrencyNotProvide()
+        {
+            var gateway = new CurrencyExchangeRateWebServiceGateway();
+
+            var requests = new []
+            {
+                new CurrencyExchangeRateRequest(),
+            };
+
+            Assert.Throws<Exception>(() =>
+            {
+                gateway.GetToUsdHistorical(requests);
+            });
+
         }
     }
 }
