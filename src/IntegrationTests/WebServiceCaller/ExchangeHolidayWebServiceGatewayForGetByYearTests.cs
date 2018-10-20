@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using WebServiceCaller;
+using MutualFundPerformance.WebServiceCaller;
 using Xunit;
 
 namespace MutualFundPerformance.IntegrationTests.WebServiceCaller

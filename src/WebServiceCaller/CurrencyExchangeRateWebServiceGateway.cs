@@ -1,13 +1,13 @@
 ﻿using MutualFundPerformance.SharedKernel.Infrastructure.CurrencyExchangeRateApi;
 
-namespace WebServiceCaller
+namespace MutualFundPerformance.WebServiceCaller
 {
     public partial class CurrencyExchangeRateWebServiceGateway
     {
         public CurrencyExchangeRateResult[] GetToUsdHistorical(
             CurrencyExchangeRateResult[] exchangeRateResults)
         {
-            return null;
+            return new CurrencyExchangeRateResult[0];
         }
     }
 }

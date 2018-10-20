@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MutualFundPerformance.SharedKernel.Infrastructure.ExchangeHolidayWebApi;
 
-namespace WebServiceCaller
+namespace MutualFundPerformance.WebServiceCaller
 {
     public class ExchangeHolidayWebServiceGateway
     {
