@@ -13,8 +13,6 @@ namespace MutualFundPerformance.WebServiceCaller
             if (requests.Length <= 0)
                 return new CurrencyExchangeRateResult[0];
 
-            var validCodes = GetValidCodes();
-
             var results = new List<CurrencyExchangeRateResult>();
             
             foreach (var request in requests)
@@ -24,27 +22,31 @@ namespace MutualFundPerformance.WebServiceCaller
                     throw new Exception("Currency code has not been given for one or more requests.");
                 }
 
-                if (validCodes.Any(c => c == request.BaseCurrencyCode))
-                {
-                    var dateAndRates = CreateDatesAndRates(request);
+                var nextResult = CreateResult(request);
 
-                    var validResult = CreateValidResult(
-                        dateAndRates,
-                        request);
-
-                    results.Add(validResult);
-                }
-                else
-                {
-                    var errorResult = CreateResultWithError(
-                        "Could not find rates for given currency code.",
-                        request);
-
-                    results.Add(errorResult);
-                }
+                results.Add(nextResult);
             }
 
             return results.ToArray();
+        }
+
+        private CurrencyExchangeRateResult CreateResult(
+            CurrencyExchangeRateRequest request)
+        {
+            var validCodes = GetValidCodes();
+
+            if (validCodes.Any(c => c == request.BaseCurrencyCode))
+            {
+                var dateAndRates = CreateDatesAndRates(request);
+
+                return CreateValidResult(
+                    dateAndRates,
+                    request);
+            }
+
+            return CreateResultWithError(
+                "Could not find rates for given currency code.",
+                request);
         }
 
         private static CurrencyExchangeRateResult.DateAndRate[] CreateDatesAndRates(
@@ -56,7 +58,7 @@ namespace MutualFundPerformance.WebServiceCaller
 
             var dateAndRates = new List<CurrencyExchangeRateResult.DateAndRate>();
 
-            var nextRate = 0.5m + random.Next(0, 1500000) / 1000000m;
+            var nextRate = CreateInitialRate(random);
 
             while (dateCounter <= request.EndDate)
             {
@@ -68,13 +70,23 @@ namespace MutualFundPerformance.WebServiceCaller
                         Rate = nextRate
                     });
 
-                    nextRate = nextRate + (Convert.ToDecimal(random.Next(-1000, 1000)) / 100000m);
+                    nextRate = nextRate + CreateVariance(random);
                 }
 
                 dateCounter = dateCounter.AddDays(1);
             }
 
             return dateAndRates.ToArray();
+        }
+
+        private static decimal CreateVariance(Random random)
+        {
+            return (Convert.ToDecimal(random.Next(-1000, 1000)) / 100000m);
+        }
+
+        private static decimal CreateInitialRate(Random random)
+        {
+            return 0.5m + random.Next(0, 1500000) / 1000000m;
         }
 
         private static CurrencyExchangeRateResult CreateValidResult(
