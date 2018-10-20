@@ -13,11 +13,14 @@ namespace MutualFundPerformance.IntegrationTests.SharedKernel.Infrastructure.Hol
         {
             var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
 
-            var holidays = holidayByYearWebServiceGateway.GetHolidays("XXXX", 2010, 2014);
+            var result = holidayByYearWebServiceGateway.GetHolidays("XXXX", 2010, 2014);
 
-            holidays.Length.Should().Be(0);
+            result.ExchangeIsoCode.Should().Be("XXXX");
+            result.StartYear.Should().Be(2010);
+            result.EndYear.Should().Be(2014);
+            result.HasError.Should().BeTrue();
+            result.ErrorMessage.Should().Be("Exchange was not found.");
         }
-
 
         [Theory]
         [InlineData("ARCD", 2016)]
@@ -29,9 +32,15 @@ namespace MutualFundPerformance.IntegrationTests.SharedKernel.Infrastructure.Hol
         {
             var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
 
-            var holidays = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, year, year);
+            var result = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, year, year);
 
-            AssertCorrectHolidaysForYear(year, holidays);
+            result.ExchangeIsoCode.Should().Be(exchangeCode);
+            result.StartYear.Should().Be(year);
+            result.EndYear.Should().Be(year);
+            result.HasError.Should().BeFalse();
+            result.ErrorMessage.Should().BeNullOrEmpty();
+
+            AssertCorrectHolidaysForYear(year, result.Holidays);
         }
 
         [Theory]
@@ -45,11 +54,17 @@ namespace MutualFundPerformance.IntegrationTests.SharedKernel.Infrastructure.Hol
         {
             var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
 
-            var holidays = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, startYear, endYear);
+            var result = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, startYear, endYear);
+
+            result.ExchangeIsoCode.Should().Be(exchangeCode);
+            result.StartYear.Should().Be(startYear);
+            result.EndYear.Should().Be(endYear);
+            result.HasError.Should().BeFalse();
+            result.ErrorMessage.Should().BeNullOrEmpty();
 
             for (int yearCounter = startYear; yearCounter <= endYear; yearCounter++)
             {
-                var holidaysForSingleYear = holidays
+                var holidaysForSingleYear = result.Holidays
                     .Where(h => h.Year == yearCounter)
                     .ToArray();
 

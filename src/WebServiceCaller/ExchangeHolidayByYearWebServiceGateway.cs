@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi;
 
 namespace WebServiceCaller
 {
@@ -13,13 +14,22 @@ namespace WebServiceCaller
             _random = new Random();
         }
 
-        public DateTime[] GetHolidays(
+        public ExchangeHolidayResult GetHolidays(
             string exchangeIsoCode,
             int startYear,
             int endYear)
         {
             if (ExchangeCodeIsValid(exchangeIsoCode))
-                return new DateTime[0];
+            {
+                return new ExchangeHolidayResult()
+                {
+                    ExchangeIsoCode = exchangeIsoCode,
+                    StartYear = startYear,
+                    EndYear = endYear,
+                    HasError = true,
+                    ErrorMessage = "Exchange was not found."
+                };
+            }
 
             var holidays = new List<DateTime>();
 
@@ -30,7 +40,15 @@ namespace WebServiceCaller
                 holidays.AddRange(holidaysForYear);
             }
 
-            return holidays.ToArray();
+            return new ExchangeHolidayResult()
+            {
+                ExchangeIsoCode = exchangeIsoCode,
+                StartYear = startYear,
+                EndYear = endYear,
+                Holidays = holidays.ToArray(),
+                HasError = false,
+                ErrorMessage = null
+            };
         }
 
         private bool ExchangeCodeIsValid(string exchangeIsoCode)
