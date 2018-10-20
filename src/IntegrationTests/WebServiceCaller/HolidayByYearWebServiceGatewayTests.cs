@@ -4,7 +4,7 @@ using FluentAssertions;
 using WebServiceCaller;
 using Xunit;
 
-namespace MutualFundPerformance.IntegrationTests.SharedKernel.Infrastructure.HolidayWebApi
+namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
 {
     public class HolidayByYearWebServiceGatewayTests
     {
