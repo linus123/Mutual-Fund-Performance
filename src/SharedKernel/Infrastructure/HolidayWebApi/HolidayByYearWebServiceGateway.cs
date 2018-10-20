@@ -20,28 +20,60 @@ namespace MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi
 
             for (int yearCounter = startYear; yearCounter <= endYear; yearCounter++)
             {
-                var holidayCount = _random.Next(5, 7);
+                var holidaysForYear = CreateNonWeekendDaysInYear(yearCounter);
 
-                for (int holidayCounter = 0; holidayCounter < holidayCount; holidayCounter++)
-                {
-                    var dayOffset = _random.Next(0, 364);
-
-                    var possibleDate = new DateTime(yearCounter, 1, 1)
-                        .AddDays(dayOffset);
-
-                    while (possibleDate.DayOfWeek == DayOfWeek.Saturday || possibleDate.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        dayOffset = _random.Next(0, 364);
-
-                        possibleDate = new DateTime(yearCounter, 1, 1)
-                            .AddDays(dayOffset);
-                    }
-
-                    holidays.Add(possibleDate);
-                }
+                holidays.AddRange(holidaysForYear);
             }
 
             return holidays.ToArray();
+        }
+
+        private DateTime[] CreateNonWeekendDaysInYear(int yearCounter)
+        {
+            var holidayCount = _random.Next(5, 7);
+
+            var holidays = new DateTime[holidayCount];
+
+            for (int holidayCounter = 0; holidayCounter < holidayCount; holidayCounter++)
+            {
+                holidays[holidayCounter] = GetRandomNonWeekendDateInYear(yearCounter);
+            }
+
+            return holidays;
+        }
+
+        private DateTime GetRandomNonWeekendDateInYear(
+            int year)
+        {
+            var nonWeekendDate = CreateRandomDayInYear(year);
+
+            while (IsWeekend(nonWeekendDate))
+            {
+                nonWeekendDate = CreateRandomDayInYear(year);
+            }
+
+            return nonWeekendDate;
+        }
+
+        private DateTime CreateRandomDayInYear(
+            int year)
+        {
+            var dayOffset = GetRandomDayCountInYear();
+
+            return new DateTime(year, 1, 1)
+                .AddDays(dayOffset);
+        }
+
+        private int GetRandomDayCountInYear()
+        {
+            return _random.Next(0, 364);
+        }
+
+        private static bool IsWeekend(
+            DateTime d)
+        {
+            return d.DayOfWeek == DayOfWeek.Saturday
+                   || d.DayOfWeek == DayOfWeek.Sunday;
         }
     }
 }
