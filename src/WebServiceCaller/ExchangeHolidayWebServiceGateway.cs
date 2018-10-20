@@ -5,16 +5,16 @@ using MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi;
 
 namespace WebServiceCaller
 {
-    public class ExchangeHolidayByYearWebServiceGateway
+    public class ExchangeHolidayWebServiceGateway
     {
         private readonly Random _random;
 
-        public ExchangeHolidayByYearWebServiceGateway()
+        public ExchangeHolidayWebServiceGateway()
         {
             _random = new Random();
         }
 
-        public ExchangeHolidayResult GetHolidays(
+        public ExchangeHolidayResult GetByYear(
             string exchangeIsoCode,
             int startYear,
             int endYear)

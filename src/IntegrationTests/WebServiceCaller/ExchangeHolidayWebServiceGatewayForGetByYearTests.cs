@@ -6,14 +6,14 @@ using Xunit;
 
 namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
 {
-    public class HolidayByYearWebServiceGatewayTests
+    public class ExchangeHolidayWebServiceGatewayForGetByYearTests
     {
         [Fact]
         public void ShouldNotReturnValuesGiveInvalidExchangeCode()
         {
-            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
+            var holidayByYearWebServiceGateway = new ExchangeHolidayWebServiceGateway();
 
-            var result = holidayByYearWebServiceGateway.GetHolidays("XXXX", 2010, 2014);
+            var result = holidayByYearWebServiceGateway.GetByYear("XXXX", 2010, 2014);
 
             result.ExchangeIsoCode.Should().Be("XXXX");
             result.StartYear.Should().Be(2010);
@@ -30,9 +30,9 @@ namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
             string exchangeCode,
             int year)
         {
-            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
+            var holidayByYearWebServiceGateway = new ExchangeHolidayWebServiceGateway();
 
-            var result = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, year, year);
+            var result = holidayByYearWebServiceGateway.GetByYear(exchangeCode, year, year);
 
             result.ExchangeIsoCode.Should().Be(exchangeCode);
             result.StartYear.Should().Be(year);
@@ -52,9 +52,9 @@ namespace MutualFundPerformance.IntegrationTests.WebServiceCaller
             int startYear,
             int endYear)
         {
-            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
+            var holidayByYearWebServiceGateway = new ExchangeHolidayWebServiceGateway();
 
-            var result = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, startYear, endYear);
+            var result = holidayByYearWebServiceGateway.GetByYear(exchangeCode, startYear, endYear);
 
             result.ExchangeIsoCode.Should().Be(exchangeCode);
             result.StartYear.Should().Be(startYear);
