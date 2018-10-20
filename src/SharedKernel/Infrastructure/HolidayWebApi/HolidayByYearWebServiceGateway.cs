@@ -20,7 +20,7 @@ namespace MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi
 
             for (int yearCounter = startYear; yearCounter <= endYear; yearCounter++)
             {
-                var holidaysForYear = CreateNonWeekendDaysInYear(yearCounter);
+                var holidaysForYear = CreateRandomNonWeekendDaysInYear(yearCounter);
 
                 holidays.AddRange(holidaysForYear);
             }
@@ -28,7 +28,8 @@ namespace MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi
             return holidays.ToArray();
         }
 
-        private DateTime[] CreateNonWeekendDaysInYear(int yearCounter)
+        private DateTime[] CreateRandomNonWeekendDaysInYear(
+            int yearCounter)
         {
             var holidayCount = _random.Next(5, 7);
 
