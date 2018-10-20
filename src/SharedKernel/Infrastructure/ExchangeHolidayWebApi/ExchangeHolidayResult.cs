@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi
+namespace MutualFundPerformance.SharedKernel.Infrastructure.ExchangeHolidayWebApi
 {
     public class ExchangeHolidayResult
     {
