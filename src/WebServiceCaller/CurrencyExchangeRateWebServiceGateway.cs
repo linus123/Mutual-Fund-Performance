@@ -2,7 +2,7 @@
 
 namespace MutualFundPerformance.WebServiceCaller
 {
-    public partial class CurrencyExchangeRateWebServiceGateway
+    public class CurrencyExchangeRateWebServiceGateway
     {
         public CurrencyExchangeRateResult[] GetToUsdHistorical(
             CurrencyExchangeRateResult[] exchangeRateResults)
