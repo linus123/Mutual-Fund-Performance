@@ -1,38 +1,51 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using MutualFundPerformance.SharedKernel.Infrastructure.HolidayWebApi;
+using WebServiceCaller;
 using Xunit;
 
 namespace MutualFundPerformance.IntegrationTests.SharedKernel.Infrastructure.HolidayWebApi
 {
     public class HolidayByYearWebServiceGatewayTests
     {
+        [Fact]
+        public void ShouldNotReturnValuesGiveInvalidExchangeCode()
+        {
+            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
+
+            var holidays = holidayByYearWebServiceGateway.GetHolidays("XXXX", 2010, 2014);
+
+            holidays.Length.Should().Be(0);
+        }
+
+
         [Theory]
-        [InlineData(2016)]
-        [InlineData(2017)]
-        [InlineData(2018)]
+        [InlineData("ARCD", 2016)]
+        [InlineData("MLVX", 2017)]
+        [InlineData("CAVE", 2018)]
         public void ShouldReturnValidHolidaysForSingleYear(
+            string exchangeCode,
             int year)
         {
-            var holidayByYearWebServiceGateway = new HolidayByYearWebServiceGateway();
+            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
 
-            var holidays = holidayByYearWebServiceGateway.GetHolidays(year, year);
+            var holidays = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, year, year);
 
             AssertCorrectHolidaysForYear(year, holidays);
         }
 
         [Theory]
-        [InlineData(2010, 2018)]
-        [InlineData(2011, 2017)]
-        [InlineData(2012, 2016)]
+        [InlineData("IMCG", 2010, 2018)]
+        [InlineData("DEAL", 2011, 2017)]
+        [InlineData("IMCC", 2012, 2016)]
         public void ShouldReturnValidHolidaysForManyYears(
+            string exchangeCode,
             int startYear,
             int endYear)
         {
-            var holidayByYearWebServiceGateway = new HolidayByYearWebServiceGateway();
+            var holidayByYearWebServiceGateway = new ExchangeHolidayByYearWebServiceGateway();
 
-            var holidays = holidayByYearWebServiceGateway.GetHolidays(startYear, endYear);
+            var holidays = holidayByYearWebServiceGateway.GetHolidays(exchangeCode, startYear, endYear);
 
             for (int yearCounter = startYear; yearCounter <= endYear; yearCounter++)
             {

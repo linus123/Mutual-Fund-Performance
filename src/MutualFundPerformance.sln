@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{08064B6E-8D10-4A46-8D8A-5CCD1A7E2C01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataPopulator", "TestDataPopulator\TestDataPopulator.csproj", "{F858B423-92AE-4147-BA39-E09EB9DB62AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDataPopulator", "TestDataPopulator\TestDataPopulator.csproj", "{F858B423-92AE-4147-BA39-E09EB9DB62AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceCaller", "WebServiceCaller\WebServiceCaller.csproj", "{C1C7FB95-0684-48E5-93B4-E02B71450027}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F858B423-92AE-4147-BA39-E09EB9DB62AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C7FB95-0684-48E5-93B4-E02B71450027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C7FB95-0684-48E5-93B4-E02B71450027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C7FB95-0684-48E5-93B4-E02B71450027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C7FB95-0684-48E5-93B4-E02B71450027}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
