@@ -2,29 +2,43 @@
 using System.Linq;
 using Microsoft.AspNetCore.Rewrite.Internal.ApacheModRewrite;
 using MutualFundPerformance.Database.MutualFund;
+using MutualFundPerformance.SharedKernel;
 using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 using MutualFundPerformance.WebApi.Controllers;
 using Xunit;
 
 namespace MutualFundPerformance.IntegrationTests.WebApi
 {
-    public class PricesControllerTests
+    public class PricesControllerTests : IDisposable
     {
+        private MutualFundDataTableGateway _mutualFundDataTableGateway;
+        private PricesController _controller;
+
+        public PricesControllerTests()
+        {
+            _mutualFundDataTableGateway = new MutualFundDataTableGateway(
+                new IntegrationTestsSettings());
+
+            _controller = getPriceController();
+
+            _mutualFundDataTableGateway.DeleteAll();
+        }
+
         private PricesController getPriceController()
         {
-            var controller = new PricesController(
-                new MutualFundDataTableGateway(new IntegrationTestsSettings()));
+            var databaseSettings = new IntegrationTestsSettings();
+            var mutualFundDataTableGateway = new MutualFundDataTableGateway(databaseSettings);
+            var mutualFundPricesService = new MutualFundPricesService(mutualFundDataTableGateway);
+            var controller = new PricesController( mutualFundPricesService);
 
             return controller;
         }
 
-    [Fact]
+        [Fact]
         
         public void FundsShouldReturnEmptyArrayWhenNoFundsAreInTheDatabase()
-    {
-        var controller = getPriceController();
-
-            var funds = controller.Funds();
+        {
+            var funds = _controller.Funds();
 
             Assert.Equal(0, funds.Length);
         }
@@ -32,8 +46,6 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
         [Fact]
         public void FundsShouldReturnSingleFundAndFundNameAndIdWhenFundTableContainsSingleRecord()
         {
-            var mutualFundDataTableGateway = new MutualFundDataTableGateway(
-                new IntegrationTestsSettings());
 
             var id = Guid.NewGuid();
 
@@ -44,26 +56,18 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
                 Symbol = "SYM"
             };
 
-            mutualFundDataTableGateway.DeleteAll();
+            _mutualFundDataTableGateway.Insert(new []{ mutualFundDto });
 
-            mutualFundDataTableGateway.Insert(new []{ mutualFundDto });
-
-            var controller = getPriceController();
-            var funds = controller.Funds();
+            var funds = _controller.Funds();
 
             Assert.Equal(1, funds.Length);
             Assert.Equal(id, funds[0].MutualFundId);
             Assert.Equal("My fund", funds[0].Name);
-
-            mutualFundDataTableGateway.DeleteAll();
         }
 
         [Fact]
         public void FundsShouldBeSortedMultipleFunds()
         {
-            var mutualFundDataTableGateway = new MutualFundDataTableGateway(
-                new IntegrationTestsSettings());
-
             var origionalkMutualFundDtos = new MutualFundDto[]
             {
                 new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 1",Symbol = "SYM"},
@@ -71,32 +75,19 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
                 new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 2" ,Symbol = "OCT"}
             };
 
-            mutualFundDataTableGateway.DeleteAll();
+            _mutualFundDataTableGateway.Insert(origionalkMutualFundDtos);
 
-            mutualFundDataTableGateway.Insert(origionalkMutualFundDtos);
-
-            var controller = getPriceController();
-            var returnedFunds = controller.Funds();
+            var returnedFunds = _controller.Funds();
             
             Assert.Equal(origionalkMutualFundDtos.Length, returnedFunds.Length);
             Assert.Equal(origionalkMutualFundDtos[0].MutualFundId, returnedFunds[0].MutualFundId);
             Assert.Equal(origionalkMutualFundDtos[1].MutualFundId, returnedFunds[2].MutualFundId);
             Assert.Equal(origionalkMutualFundDtos[2].MutualFundId, returnedFunds[1].MutualFundId);
-
-          
-
-            mutualFundDataTableGateway.DeleteAll();
         }
-
-
-
 
         [Fact]
         public void FundsShouldReturnMultipleFunds()
         {
-            var mutualFundDataTableGateway = new MutualFundDataTableGateway(
-                new IntegrationTestsSettings());
-
             var origionalkMutualFundDtos = new MutualFundDto[]
             {
                 new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 1",Symbol = "SYM"},
@@ -104,21 +95,20 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
                 new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 2" ,Symbol = "OCT"}
             };
 
-            mutualFundDataTableGateway.DeleteAll();
+            _mutualFundDataTableGateway.Insert(origionalkMutualFundDtos);
 
-            mutualFundDataTableGateway.Insert(origionalkMutualFundDtos);
-
-            var controller = getPriceController();
-            var returnedFunds = controller.Funds();
+            var returnedFunds = _controller.Funds();
 
             Assert.Equal(origionalkMutualFundDtos.Length, returnedFunds.Length);
             foreach (var fund in origionalkMutualFundDtos)
             {
                 Assert.Equal(true,returnedFunds.Any(cond=> cond.MutualFundId == fund.MutualFundId));
             }
-            
-            mutualFundDataTableGateway.DeleteAll();
         }
 
+        public void Dispose()
+        {
+            _mutualFundDataTableGateway.DeleteAll();
+        }
     }
 }
