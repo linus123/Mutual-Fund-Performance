@@ -29,7 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
-    <ProjectReference Include="..\WebApi\WebApi.csproj" />
+    <ProjectReference Include="..\WebServiceCaller\WebServiceCaller.csproj" />
   </ItemGroup>
 
   <ItemGroup>
