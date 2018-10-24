@@ -1,4 +1,5 @@
-﻿using MutualFundPerformance.Database.MutualFund;
+﻿using System.Linq;
+using MutualFundPerformance.Database.MutualFund;
 using MutualFundPerformance.SharedKernel;
 using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 
@@ -6,22 +7,19 @@ namespace MutualFundPerformance.WebApi.Controllers
 {
     public class PricesController
     {
-        private IMutualFundPerformanceDatabaseSettings _mutualFundPerformanceDatabaseSettings;
-
+        
+        private MutualFundPricesService _mutualFundPriceService;
         public PricesController(
-            IMutualFundPerformanceDatabaseSettings mutualFundPerformanceDatabaseSettings)
+            MutualFundPricesService mutualFundPriceService
+            )
         {
-            _mutualFundPerformanceDatabaseSettings = mutualFundPerformanceDatabaseSettings;
+            _mutualFundPriceService = mutualFundPriceService;
         }
 
         public MutualFundDto[] Funds()
         {
-            var mutualFundDataTableGateway = new MutualFundDataTableGateway(
-                _mutualFundPerformanceDatabaseSettings);
+            return _mutualFundPriceService.Funds();
 
-            var mutualFundDtos = mutualFundDataTableGateway.GetAll();
-
-            return mutualFundDtos;
         }
     }
 }

@@ -5,7 +5,7 @@ using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 
 namespace MutualFundPerformance.Database.MutualFund
 {
-    public class MutualFundDataTableGateway : BaseMutualFundPerformanceDataTableGateway
+    public class MutualFundDataTableGateway : BaseMutualFundPerformanceDataTableGateway,IMutualFundDataTableGateway
     {
         public MutualFundDataTableGateway(
             IMutualFundPerformanceDatabaseSettings mutualFundPerformanceDatabaseSettings)

@@ -13,7 +13,7 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
         private PricesController getPriceController()
         {
             var controller = new PricesController(
-                new IntegrationTestsSettings());
+                new MutualFundDataTableGateway(new IntegrationTestsSettings()));
 
             return controller;
         }
@@ -57,6 +57,37 @@ namespace MutualFundPerformance.IntegrationTests.WebApi
 
             mutualFundDataTableGateway.DeleteAll();
         }
+
+        [Fact]
+        public void FundsShouldBeSortedMultipleFunds()
+        {
+            var mutualFundDataTableGateway = new MutualFundDataTableGateway(
+                new IntegrationTestsSettings());
+
+            var origionalkMutualFundDtos = new MutualFundDto[]
+            {
+                new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 1",Symbol = "SYM"},
+                new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 3",Symbol = "CBL"},
+                new MutualFundDto(){ MutualFundId = Guid.NewGuid(),Name = "My fund 2" ,Symbol = "OCT"}
+            };
+
+            mutualFundDataTableGateway.DeleteAll();
+
+            mutualFundDataTableGateway.Insert(origionalkMutualFundDtos);
+
+            var controller = getPriceController();
+            var returnedFunds = controller.Funds();
+            
+            Assert.Equal(origionalkMutualFundDtos.Length, returnedFunds.Length);
+            Assert.Equal(origionalkMutualFundDtos[0].MutualFundId, returnedFunds[0].MutualFundId);
+            Assert.Equal(origionalkMutualFundDtos[1].MutualFundId, returnedFunds[2].MutualFundId);
+            Assert.Equal(origionalkMutualFundDtos[2].MutualFundId, returnedFunds[1].MutualFundId);
+
+          
+
+            mutualFundDataTableGateway.DeleteAll();
+        }
+
 
 
 
