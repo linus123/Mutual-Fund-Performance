@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MutualFundPerformance.Database.MutualFund;
 using MutualFundPerformance.SharedKernel;
@@ -16,16 +17,26 @@ namespace MutualFundPerformance.WebApi.Controllers
                 mutualFundPerformanceDatabaseSettings);
         }
 
-        public string[] GetAllFunds()
+        public FundListModel[] GetAllFunds()
         {
             var mutualFundDtos = _mutualFundDataTableGateway.GetAll();
 
             var fundNames = mutualFundDtos
-                .Select(d => d.Name)
-                .OrderBy(n => n)
+                .Select(f => new FundListModel
+                {
+                    Id = f.MutualFundId,
+                    Name = f.Name
+                })
+                .OrderBy(m => m.Name)
                 .ToArray();
 
             return fundNames;
+        }
+
+        public class FundListModel
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }
