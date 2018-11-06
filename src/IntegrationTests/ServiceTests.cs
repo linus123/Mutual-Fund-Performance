@@ -12,7 +12,7 @@ using Xunit;
 
 namespace MutualFundPerformance.IntegrationTests
 {
-    public class ServiceTests
+    public class ServiceTests : IDisposable
     {
         private MutualFundDataTableGateway mutualFundGateway;
         private IntegrationTestsSettings settings;
@@ -72,9 +72,18 @@ namespace MutualFundPerformance.IntegrationTests
             });
 
             var mutualFundPrice = new MutualFundPrice(settings);
-            mutualFundPrice.GetAllFunds().Length.Should().Be(1);
-            mutualFundPrice.GetAllFunds()[0].Id.Should().Be(newGuid);
+
+            var fundListModels = mutualFundPrice.GetAllFunds();
+
+            fundListModels.Length.Should().Be(1);
+            fundListModels[0].Id.Should().Be(newGuid);
 
         }
+
+        public void Dispose()
+        {
+            mutualFundGateway.DeleteAll();
+        }
+
     }
 }

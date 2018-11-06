@@ -27,6 +27,7 @@ namespace MutualFundPerformance.IntegrationTests.Database
             var dto1 = new MutualFundDto()
             {
                 MutualFundId = mutualFundId,
+                Symbol = "123",
                 Name = "Mutual Fund 1"
             };
 
@@ -56,6 +57,7 @@ namespace MutualFundPerformance.IntegrationTests.Database
             var mutualFund1 = new MutualFundDto()
             {
                 MutualFundId = mutualFundId,
+                Symbol = "123",
                 Name = "Mutual Fund 1"
             };
 
