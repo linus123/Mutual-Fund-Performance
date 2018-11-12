@@ -3,18 +3,23 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MutualFundPerformance.Database.MutualFund;
 using MutualFundPerformance.SharedKernel;
+using MutualFundPerformance.SharedKernel.Infrastructure.HistoricalPriceData;
 using MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData;
 
 namespace MutualFundPerformance.WebApi.Controllers
 {
-    public class MutualFundPrice : Controller
+    public class MutualFundPriceController : Controller
     {
-        private readonly IMutualFundDataGateway _mutualFundDataTableGateway;
         private readonly MutualFundPriceService _mutualFundPriceService;
 
-        public MutualFundPrice(
-            IMutualFundPerformanceDatabaseSettings mutualFundPerformanceDatabaseSettings)
+        private readonly IMutualFundDataGateway _mutualFundDataTableGateway;
+        private readonly IInvestmentVehicleDataTableGateway _investmentVehicleDataTableGateway;
+
+        public MutualFundPriceController(
+            IMutualFundPerformanceDatabaseSettings mutualFundPerformanceDatabaseSettings,
+            IInvestmentVehicleDataTableGateway investmentVehicleDataTableGateway)
         {
+            _investmentVehicleDataTableGateway = investmentVehicleDataTableGateway;
             _mutualFundDataTableGateway = new MutualFundDataTableGateway(
                 mutualFundPerformanceDatabaseSettings);
 
@@ -25,7 +30,6 @@ namespace MutualFundPerformance.WebApi.Controllers
         {
             return _mutualFundPriceService.GetAllFunds();
         }
-
 
         public ReturnModel GetFundsForIds(
             Guid[] idsToReturn,
@@ -40,22 +44,38 @@ namespace MutualFundPerformance.WebApi.Controllers
                 return CreateModelWithError("Date is invalid");
             }
 
+            idsToReturn = idsToReturn.Where(id => id != Guid.Empty).ToArray();
+
             if (idsToReturn.Length <= 0)
             {
                 return CreateModelWithError("no ids are passed");
             }
 
-            if (idsToReturn.Any(d => d != Guid.Empty))
+            var mutualFundDtos = _mutualFundDataTableGateway.GetAll();
+
+            var mutualFundDto = mutualFundDtos.FirstOrDefault(m => idsToReturn.Any(id => id == m.MutualFundId));
+
+            if (mutualFundDto == null)
             {
                 return CreateModelWithError("ids are not recognized");
             }
 
+            var investmentVehicleDtos = _investmentVehicleDataTableGateway.GetAll();
+
+            var investmentVehicleDto = investmentVehicleDtos.FirstOrDefault(d => d.ExternalId == mutualFundDto.MutualFundId);
+
+            if (investmentVehicleDto == null)
+            {
+                return CreateModelWithError("Price Information is not found");
+            }
+
             return new ReturnModel()
             {
-                Data = new object[0],
+                Data = new object[1],
                 HasError = false,
                 ErrorResponse = new string[0]
             };
+
         }
 
         private static ReturnModel CreateModelWithError(

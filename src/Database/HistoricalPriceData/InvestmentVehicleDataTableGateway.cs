@@ -5,7 +5,7 @@ using MutualFundPerformance.SharedKernel.Infrastructure.HistoricalPriceData;
 
 namespace MutualFundPerformance.Database.HistoricalPriceData
 {
-    public class InvestmentVehicleDataTableGateway : BaseMutualFundPerformanceDataTableGateway
+    public class InvestmentVehicleDataTableGateway : BaseMutualFundPerformanceDataTableGateway, IInvestmentVehicleDataTableGateway
     {
         public InvestmentVehicleDataTableGateway(
             IMutualFundPerformanceDatabaseSettings mutualFundPerformanceDatabaseSettings)
