@@ -12,12 +12,14 @@ namespace MutualFundPerformance.IntegrationTests
         private MutualFundDataTableGateway mutualFundGateway;
         private IntegrationTestsSettings settings;
         private InvestmentVehicleDataTableGateway investmentVehicleDataTableGateway;
+        private PriceDataTableGateway priceDataTableGateway;
 
         public TestHelper()
         {
             settings = new IntegrationTestsSettings();
             mutualFundGateway = new MutualFundDataTableGateway(new IntegrationTestsSettings());
             investmentVehicleDataTableGateway = new InvestmentVehicleDataTableGateway(settings);
+            priceDataTableGateway = new PriceDataTableGateway(settings);
         }
 
         public void InsertMutualFundDto(
@@ -40,6 +42,10 @@ namespace MutualFundPerformance.IntegrationTests
             return new MutualFundPriceController(settings, investmentVehicleDataTableGateway);
         }
 
+        public void InsertPriceDto(PriceDto price)
+        {
+            priceDataTableGateway.Insert(new PriceDto[]{price});
+        }
 
         public void InsertInvestmentVehicleDto(InvestmentVehicleDto dto)
         {
@@ -48,7 +54,9 @@ namespace MutualFundPerformance.IntegrationTests
 
         private void DeleteAll()
         {
+            priceDataTableGateway.DeleteAll();
             mutualFundGateway.DeleteAll();
+            investmentVehicleDataTableGateway.DeleteAll();
         }
     }
 }
