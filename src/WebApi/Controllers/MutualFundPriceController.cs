@@ -106,18 +106,47 @@ namespace MutualFundPerformance.WebApi.Controllers
             {
                 var formattedDate = FormattedDate(endDate.AddDays(-1));
 
-                var mutualFundWithPerformance = new MutualFundWithPerformance()
+                var pricePrevDay = priceDtos.FirstOrDefault(p => p.InvestmentVehicleId == investmentVehicleDto.InvestmentVehicleId && p.CloseDate == endDate.AddDays(-1));
+
+                var mutualFundWithPerformance = new MutualFundWithPerformance();
+
+                if (pricePrevDay == null)
+                {
+
+                    mutualFundWithPerformance = new MutualFundWithPerformance()
+                    {
+                        Name = mutualFundDto.Name,
+                        Price = new[]
+                        {
+                            new PriceModel()
+                            {
+                                Error = $"No price found for {formattedDate}",
+                                Value = null
+                            },
+                        }
+                    };
+
+                    return new ReturnModel()
+                    {
+                        Data = new MutualFundWithPerformance[] { mutualFundWithPerformance },
+                        HasError = false,
+                        ErrorResponse = new string[0]
+                    };
+                }
+
+                mutualFundWithPerformance = new MutualFundWithPerformance()
                 {
                     Name = mutualFundDto.Name,
                     Price = new[]
                     {
                         new PriceModel()
                         {
-                            Error = $"No price found for {formattedDate}",
-                            Value = null
+                            Error = "",
+                            Value = -1.0m
                         },
                     }
                 };
+
 
                 return new ReturnModel()
                 {
