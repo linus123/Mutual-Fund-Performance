@@ -5,11 +5,11 @@ using System.Text;
 
 namespace MutualFundPerformance.SharedKernel.Infrastructure.MutualFundData
 {
-    public class MutualFundPriceService
+    public class MutualFundServiceForUI
     {
         private readonly IMutualFundDataGateway _mutualFundDataTableGateway;
         
-        public MutualFundPriceService(IMutualFundDataGateway mutualFundDataTable)
+        public MutualFundServiceForUI(IMutualFundDataGateway mutualFundDataTable)
         {
             _mutualFundDataTableGateway = mutualFundDataTable;
         }
