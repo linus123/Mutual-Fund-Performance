@@ -13,19 +13,34 @@ namespace MutualFundPerformance.WebApi.Controllers
     public class MutualFundPriceController : Controller
     {
         private readonly MutualFundServiceForUI _mutualFundPriceService;
-
         private readonly PerformanceService _performanceService;
-        
+        private readonly InvestmentVehicleDataTableGateway _investmentVehicleDataTableGateway;
+        private readonly MutualFundDataTableGateway _mutualFundDataTableGateway;
+        private readonly PriceDataTableGateway _priceDataTableGateway;
 
-        public MutualFundPriceController(
-            Pei)
+
+        public MutualFundPriceController()
         {
-            _investmentVehicleDataTableGateway = investmentVehicleDataTableGateway;
+            _investmentVehicleDataTableGateway = new InvestmentVehicleDataTableGateway(new WebApiSettings(Startup.Configuration));
             _mutualFundDataTableGateway = new MutualFundDataTableGateway(
-                mutualFundPerformanceDatabaseSettings);
+                new WebApiSettings(Startup.Configuration));
 
             _mutualFundPriceService = new MutualFundServiceForUI(_mutualFundDataTableGateway);
-            _priceDataTableGateway = new PriceDataTableGateway(mutualFundPerformanceDatabaseSettings);
+            _priceDataTableGateway = new PriceDataTableGateway(new WebApiSettings(Startup.Configuration));
+
+            _performanceService = new PerformanceService(_priceDataTableGateway,_mutualFundDataTableGateway,_investmentVehicleDataTableGateway);
+        }
+
+        public MutualFundPriceController(IMutualFundPerformanceDatabaseSettings settings)
+        {
+            _investmentVehicleDataTableGateway = new InvestmentVehicleDataTableGateway(settings);
+            _mutualFundDataTableGateway = new MutualFundDataTableGateway(
+                settings);
+
+            _mutualFundPriceService = new MutualFundServiceForUI(_mutualFundDataTableGateway);
+            _priceDataTableGateway = new PriceDataTableGateway(settings);
+
+            _performanceService = new PerformanceService(_priceDataTableGateway, _mutualFundDataTableGateway, _investmentVehicleDataTableGateway);
         }
 
         public FundListModel[] GetAllFunds()
@@ -37,12 +52,7 @@ namespace MutualFundPerformance.WebApi.Controllers
             Guid[] idsToReturn,
             int year, int month, int day)
         {
-            
-
-          
-
-          
-            
+            return _performanceService.GetMutualFundsForIds(idsToReturn, year, month, day);
         }
 
        

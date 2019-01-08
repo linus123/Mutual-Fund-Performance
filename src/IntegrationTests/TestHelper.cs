@@ -39,7 +39,7 @@ namespace MutualFundPerformance.IntegrationTests
 
         public MutualFundPriceController CreateController()
         {
-            return new MutualFundPriceController(settings, investmentVehicleDataTableGateway);
+            return new MutualFundPriceController(settings);
         }
 
         public void InsertPriceDto(PriceDto price)

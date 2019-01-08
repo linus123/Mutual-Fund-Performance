@@ -12,14 +12,16 @@ namespace MutualFundPerformance.SharedKernel.Performance
         private readonly IMutualFundDataGateway _mutualFundDataTableGateway;
         private readonly IInvestmentVehicleDataTableGateway _investmentVehicleDataTableGateway;
 
-        public PerformanceService(IPriceDataTableGateway priceDataTableGateway,IMutualFundDataGateway mutualFundDataGateway,IInvestmentVehicleDataTableGateway investmentVehicleDataTableGateway)
+        public PerformanceService(IPriceDataTableGateway priceDataTableGateway,
+            IMutualFundDataGateway mutualFundDataGateway,
+            IInvestmentVehicleDataTableGateway investmentVehicleDataTableGateway)
         {
             _priceDataTableGateway = priceDataTableGateway;
             _mutualFundDataTableGateway = mutualFundDataGateway;
             _investmentVehicleDataTableGateway = investmentVehicleDataTableGateway;
         }
 
-        public ReturnModel GetReturnsForIds(Guid[] idsToReturn,
+        public ReturnModel GetMutualFundsForIds(Guid[] idsToReturn,
             int year, int month, int day)
         {
 
@@ -51,7 +53,8 @@ namespace MutualFundPerformance.SharedKernel.Performance
 
             var investmentVehicleDtos = _investmentVehicleDataTableGateway.GetAll();
 
-            var investmentVehicleDto = investmentVehicleDtos.FirstOrDefault(d => d.ExternalId == mutualFundDto.MutualFundId);
+            var investmentVehicleDto =
+                investmentVehicleDtos.FirstOrDefault(d => d.ExternalId == mutualFundDto.MutualFundId);
 
             if (investmentVehicleDto == null)
             {
@@ -60,7 +63,8 @@ namespace MutualFundPerformance.SharedKernel.Performance
 
             var priceDtos = _priceDataTableGateway.GetAll();
 
-            var priceDayOf = priceDtos.FirstOrDefault(p => p.InvestmentVehicleId == investmentVehicleDto.InvestmentVehicleId && p.CloseDate == endDate);
+            var priceDayOf = priceDtos.FirstOrDefault(p =>
+                p.InvestmentVehicleId == investmentVehicleDto.InvestmentVehicleId && p.CloseDate == endDate);
 
             if (priceDayOf == null)
             {
@@ -81,7 +85,7 @@ namespace MutualFundPerformance.SharedKernel.Performance
 
                 return new ReturnModel()
                 {
-                    Data = new MutualFundWithPerformance[] { mutualFundWithPerformance },
+                    Data = new MutualFundWithPerformance[] {mutualFundWithPerformance},
                     HasError = false,
                     ErrorResponse = new string[0]
                 };
@@ -90,7 +94,9 @@ namespace MutualFundPerformance.SharedKernel.Performance
             {
                 var formattedDate = FormattedDate(endDate.AddDays(-1));
 
-                var pricePrevDay = priceDtos.FirstOrDefault(p => p.InvestmentVehicleId == investmentVehicleDto.InvestmentVehicleId && p.CloseDate == endDate.AddDays(-1));
+                var pricePrevDay = priceDtos.FirstOrDefault(p =>
+                    p.InvestmentVehicleId == investmentVehicleDto.InvestmentVehicleId &&
+                    p.CloseDate == endDate.AddDays(-1));
 
                 var mutualFundWithPerformance = new MutualFundWithPerformance();
 
@@ -112,7 +118,7 @@ namespace MutualFundPerformance.SharedKernel.Performance
 
                     return new ReturnModel()
                     {
-                        Data = new MutualFundWithPerformance[] { mutualFundWithPerformance },
+                        Data = new MutualFundWithPerformance[] {mutualFundWithPerformance},
                         HasError = false,
                         ErrorResponse = new string[0]
                     };
@@ -134,13 +140,13 @@ namespace MutualFundPerformance.SharedKernel.Performance
 
                 return new ReturnModel()
                 {
-                    Data = new MutualFundWithPerformance[] { mutualFundWithPerformance },
+                    Data = new MutualFundWithPerformance[] {mutualFundWithPerformance},
                     HasError = false,
                     ErrorResponse = new string[0]
                 };
             }
 
-         
+
         }
 
         private static ReturnModel CreateModelWithError(
@@ -150,7 +156,7 @@ namespace MutualFundPerformance.SharedKernel.Performance
             {
                 Data = new MutualFundWithPerformance[0],
                 HasError = true,
-                ErrorResponse = new[] { errorMessage }
+                ErrorResponse = new[] {errorMessage}
             };
         }
 
@@ -160,22 +166,22 @@ namespace MutualFundPerformance.SharedKernel.Performance
         }
 
         public class ReturnModel
-    {
-        public MutualFundWithPerformance[] Data { get; set; }
-        public bool HasError { get; set; }
-        public string[] ErrorResponse { get; set; }
-    }
+        {
+            public MutualFundWithPerformance[] Data { get; set; }
+            public bool HasError { get; set; }
+            public string[] ErrorResponse { get; set; }
+        }
 
-    public class MutualFundWithPerformance
-    {
-        public string Name { get; set; }
-        public Returns[] Price { get; set; }
-    }
+        public class MutualFundWithPerformance
+        {
+            public string Name { get; set; }
+            public Returns[] Price { get; set; }
+        }
 
-    public class Returns
-    {
-        public decimal? Value { get; set; }
-        public string Error { get; set; }
+        public class Returns
+        {
+            public decimal? Value { get; set; }
+            public string Error { get; set; }
+        }
     }
-
 }
